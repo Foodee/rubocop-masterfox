@@ -1,3 +1,6 @@
+require:
+  - ./lib/rubocop/masterfox
+
 AllCops:
   NewCops: enable
 
