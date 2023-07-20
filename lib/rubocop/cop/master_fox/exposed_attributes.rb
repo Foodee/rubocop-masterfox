@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module MasterFox
-#  `exposed_attributes` is our custom JSONAPI extension to make `attributes` public
+      #  `exposed_attributes` is our custom JSONAPI extension to make `attributes` public
       #
       #  @example
       #
@@ -25,11 +25,11 @@ module RuboCop
           (send nil? :exposed_attributes (:sym $_) ...)
         PATTERN
 
-        MSG = 'This method is deprecated. Replace it with: `attribute :%s, public: true`'.freeze
+        MSG = 'This method is deprecated. Replace it with: `attribute :%s, public: true`'
 
         def on_send(node)
           on_exposed_attributes(node) do |attr|
-            message = MSG % [attr]
+            message = format(MSG, attr)
 
             add_offense(node, message: message) do |corrector|
               next if part_of_ignored_node?(node)
