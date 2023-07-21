@@ -2,3 +2,8 @@ MasterFox/ExposedAttributes:
   Description: '`exposed_attributes` is our custom JSONAPI extension to make `attributes` public'
   Enabled: true
   VersionAdded: '0.1.0'
+
+MasterFox/ExposedAttribute:
+  Description: '`exposed_attribute` is our custom JSONAPI extension to make the `attribute` public'
+  Enabled: true
+  VersionAdded: '0.1.1'
