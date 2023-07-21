@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rubocop'
+
 module RuboCop
   module Cop
     module MasterFox
@@ -22,22 +24,35 @@ module RuboCop
         include IgnoredNode
 
         def_node_matcher :on_exposed_attributes, <<~PATTERN
-          (send nil? :exposed_attributes (:sym $_) ...)
+          (send nil? :exposed_attributes (:sym $_)* ...)
         PATTERN
 
         MSG = 'This method is deprecated. Replace it with: `attribute :%s, public: true`'
 
         def on_send(node)
-          on_exposed_attributes(node) do |attr|
-            message = format(MSG, attr)
+          on_exposed_attributes(node) do |*attrs|
+            attrs.flatten!
+            message = format(MSG, attrs.first)
 
             add_offense(node, message: message) do |corrector|
               next if part_of_ignored_node?(node)
 
-              corrector.replace(node, "attribute :#{attr}, public: true")
+              corrector.replace(node, fix_attributes(attrs))
             end
 
             ignore_node(node)
+          end
+        end
+
+        private
+
+        def fix_attributes(attrs)
+          attrs.map do |attr|
+            if attrs.index(attr) == attrs.index(attrs.last)
+             "attribute :#{attr}, public: true"
+            else
+              "attribute :#{attr}, public: true\n  "
+            end
           end
         end
       end

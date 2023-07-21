@@ -6,14 +6,18 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedAttributes, :config do
   it 'registers an offense when using `#exposed_attributes`' do
     expect_offense(<<~RUBY)
       class Foo
-        exposed_attributes :bar
-        ^^^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedAttributes: This method is deprecated. Replace it with: `attribute :bar, public: true`
+        exposed_attributes :bar,
+        ^^^^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedAttributes: This method is deprecated. Replace it with: `attribute :bar, public: true`
+                           :foo,
+                           :baz
       end
     RUBY
 
     expect_correction(<<~RUBY)
       class Foo
         attribute :bar, public: true
+        attribute :foo, public: true
+        attribute :baz, public: true
       end
     RUBY
   end
