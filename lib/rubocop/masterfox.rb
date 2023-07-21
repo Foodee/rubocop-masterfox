@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'masterfox/version'
+require_relative 'masterfox/support'
 require 'pry-byebug'
 require 'yaml'
 # Auto-require all cops under `rubocop/cop/**/*.rb`
