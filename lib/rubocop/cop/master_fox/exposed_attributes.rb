@@ -35,17 +35,7 @@ module RuboCop
           on_exposed_attributes(node) do |*attrs|
             attrs.flatten!
             message = format(MSG, attrs.first)
-            options = unless node.arguments.map(&:class).uniq == [RuboCop::AST::SymbolNode]
-              node.arguments.last.pairs.map do |pair|
-                { pair.children[0].value => to_boolean(pair.children[1]) }
-              end.reduce(:merge)
-            end
-
-            add_offense(node, message: message) do |corrector|
-              next if part_of_ignored_node?(node)
-
-              corrector.replace(node, fix_attributes(attrs, options))
-            end
+            offense(node, message, attrs)
 
             ignore_node(node)
           end
@@ -53,10 +43,28 @@ module RuboCop
 
         private
 
+        def offense(node, message, attrs)
+          options = prepare_options(node)
+
+          add_offense(node, message: message) do |corrector|
+            next if part_of_ignored_node?(node)
+
+            corrector.replace(node, fix_attributes(attrs, options))
+          end
+        end
+
+        def prepare_options(node)
+          return if node.arguments.map(&:class).uniq == [RuboCop::AST::SymbolNode]
+
+          node.arguments.last.pairs.map do |pair|
+            { pair.children[0].value => to_boolean(pair.children[1]) }
+          end.reduce(:merge)
+        end
+
         def fix_attributes(attrs, options)
-          if options && options.any?
+          if options&.any?
             attrs.map do |attr|
-              "attribute :#{attr}, public: true, #{options.map {|k,v| "#{k}: #{v}"}.join(', ')}"
+              "attribute :#{attr}, public: true, #{options.map { |k, v| "#{k}: #{v}" }.join(', ')}"
             end.join("\n")
           else
             attrs.map do |attr|

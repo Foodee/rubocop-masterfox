@@ -15,11 +15,11 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedAttributes, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-      class Foo
-        attribute :bar, public: true
-      attribute :foo, public: true
-      attribute :baz, public: true
-      end
+        class Foo
+          attribute :bar, public: true
+        attribute :foo, public: true
+        attribute :baz, public: true
+        end
       RUBY
     end
 
@@ -35,11 +35,11 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedAttributes, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-      class Foo
-        attribute :bar, public: true, readonly: true
-      attribute :foo, public: true, readonly: true
-      attribute :baz, public: true, readonly: true
-      end
+        class Foo
+          attribute :bar, public: true, readonly: true
+        attribute :foo, public: true, readonly: true
+        attribute :baz, public: true, readonly: true
+        end
       RUBY
     end
   end

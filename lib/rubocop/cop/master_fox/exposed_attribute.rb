@@ -33,15 +33,7 @@ module RuboCop
         def on_send(node)
           on_exposed_attributes(node) do |attr|
             message = format(MSG, attr)
-            options = node.arguments.last.pairs.map do |pair|
-              { pair.children[0].value => to_boolean(pair.children[1]) }
-            end.reduce(:merge)
-
-            add_offense(node, message: message) do |corrector|
-              next if part_of_ignored_node?(node)
-
-              corrector.replace(node, fix_attributes(attr, options))
-            end
+            offense(node, message, attr)
 
             ignore_node(node)
           end
@@ -49,9 +41,25 @@ module RuboCop
 
         private
 
+        def offense(node, message, attr)
+          options = prepare_options(node)
+
+          add_offense(node, message: message) do |corrector|
+            next if part_of_ignored_node?(node)
+
+            corrector.replace(node, fix_attributes(attr, options))
+          end
+        end
+
+        def prepare_options(node)
+          node.arguments.last.pairs.map do |pair|
+            { pair.children[0].value => to_boolean(pair.children[1]) }
+          end.reduce(:merge)
+        end
+
         def fix_attributes(attr, options)
           if options.any?
-            "attribute :#{attr}, public: true, #{options.map {|k,v| "#{k}: #{v}"}.join(', ')}"
+            "attribute :#{attr}, public: true, #{options.map { |k, v| "#{k}: #{v}" }.join(', ')}"
           else
             "attribute :#{attr}, public: true"
           end
