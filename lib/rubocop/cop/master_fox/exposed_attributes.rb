@@ -49,7 +49,7 @@ module RuboCop
         def fix_attributes(attrs)
           attrs.map do |attr|
             if attrs.index(attr) == attrs.index(attrs.last)
-             "attribute :#{attr}, public: true"
+              "attribute :#{attr}, public: true"
             else
               "attribute :#{attr}, public: true\n  "
             end
