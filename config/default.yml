@@ -12,3 +12,8 @@ MasterFox/ExposedHasMany:
   Description: '`exposed_has_many` is our custom JSONAPI extension to make a `has_many` relationship public'
   Enabled: true
   VersionAdded: '0.1.2'
+
+MasterFox/ExposedHasOne:
+  Description: '`exposed_has_one` is our custom JSONAPI extension to make a `has_one` relationship public'
+  Enabled: true
+  VersionAdded: '0.1.3'
