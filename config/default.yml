@@ -7,3 +7,8 @@ MasterFox/ExposedAttribute:
   Description: '`exposed_attribute` is our custom JSONAPI extension to make the `attribute` public'
   Enabled: true
   VersionAdded: '0.1.1'
+
+MasterFox/ExposedHasMany:
+  Description: '`exposed_has_many` is our custom JSONAPI extension to make a `has_many` relationship public'
+  Enabled: true
+  VersionAdded: '0.1.2'

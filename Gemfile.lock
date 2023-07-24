@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubocop-masterfox (0.1.1)
+    rubocop-masterfox (0.1.2)
       rubocop
 
 GEM
