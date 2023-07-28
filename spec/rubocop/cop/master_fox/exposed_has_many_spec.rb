@@ -7,14 +7,14 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedHasMany, :config do
     it 'public has_many' do
       expect_offense(<<~RUBY)
         class Foo
-          exposed_has_many :bar, readonly: true
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedHasMany: This method is deprecated. Replace it with: `has_many :bar, public: true`
+          exposed_has_many :bar
+          ^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedHasMany: This method is deprecated. Replace it with: `has_many :bar, public: true`
         end
       RUBY
 
       expect_correction(<<~RUBY)
         class Foo
-          has_many :bar, public: true, readonly: true
+          has_many :bar, public: true
         end
       RUBY
     end
