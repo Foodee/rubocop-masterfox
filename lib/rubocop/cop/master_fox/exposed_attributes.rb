@@ -46,7 +46,7 @@ module RuboCop
         def offense(node, message, attrs)
           options = prepare_options(node)
 
-          add_offense(node, message: message) do |corrector|
+          add_offense(node, message:) do |corrector|
             next if part_of_ignored_node?(node)
 
             corrector.replace(node, fix_attributes(attrs, options))
