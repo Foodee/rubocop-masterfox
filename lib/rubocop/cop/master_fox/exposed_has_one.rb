@@ -50,6 +50,9 @@ module RuboCop
         end
 
         def prepare_options(node)
+          options = node.arguments
+          return [] if options.last.is_a?(RuboCop::AST::SymbolNode)
+
           node.arguments.last.pairs.map do |pair|
             { pair.children[0].value => to_boolean(pair.children[1]) }
           end.reduce(:merge)
