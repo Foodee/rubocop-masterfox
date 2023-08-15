@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedHasOne, :config do
 
       expect_correction(<<~RUBY)
         class Foo
-          has_one :bar, public: true, readonly: true, something: else
+          has_one :bar, public: true, readonly: true, something: 'else'
         end
       RUBY
     end

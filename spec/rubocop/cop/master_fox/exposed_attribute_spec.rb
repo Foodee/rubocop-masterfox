@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedAttribute, :config do
 
       expect_correction(<<~RUBY)
         class Foo
-          attribute :bar, public: true, readonly: true, something: else
+          attribute :bar, public: true, readonly: true, something: 'else'
         end
       RUBY
     end

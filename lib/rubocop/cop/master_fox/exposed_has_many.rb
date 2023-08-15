@@ -68,7 +68,16 @@ module RuboCop
 
         def format_options(options)
           options.map do |k, v|
-            v.is_a?(Symbol) ? "#{k}: :#{v}" : "#{k}: #{v}"
+            # Hacky way to make string interpolation since Ruby strips the
+            # Symbol/String from the variable
+            case v
+            in Symbol
+              "#{k}: :#{v}"
+            in String
+              "#{k}: '#{v}'"
+            else
+              "#{k}: #{v}"
+            end
           end.join(', ')
         end
       end
