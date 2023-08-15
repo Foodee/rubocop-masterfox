@@ -60,10 +60,16 @@ module RuboCop
 
         def fix_attributes(attr, options)
           if options.any?
-            "has_one :#{attr}, public: true, #{options.map { |k, v| "#{k}: #{v}" }.join(', ')}"
+            "has_one :#{attr}, public: true, #{format_options(options)}"
           else
             "has_one :#{attr}, public: true"
           end
+        end
+
+        def format_options(options)
+          options.map do |k, v|
+            v.is_a?(Symbol) ? "#{k}: :#{v}" : "#{k}: #{v}"
+          end.join(', ')
         end
       end
     end

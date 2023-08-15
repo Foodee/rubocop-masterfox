@@ -47,7 +47,8 @@ module RuboCop
           add_offense(node, message:) do |corrector|
             next if part_of_ignored_node?(node)
 
-            corrector.replace(node, fix_attributes(attr, options))
+            attributes = fix_attributes(attr, options)
+            corrector.replace(node, attributes)
           end
         end
 
@@ -59,10 +60,16 @@ module RuboCop
 
         def fix_attributes(attr, options)
           if options.any?
-            "attribute :#{attr}, public: true, #{options.map { |k, v| "#{k}: #{v}" }.join(', ')}"
+            "attribute :#{attr}, public: true, #{format_options(options)}"
           else
             "attribute :#{attr}, public: true"
           end
+        end
+
+        def format_options(options)
+          options.map do |k, v|
+            v.is_a?(Symbol) ? "#{k}: :#{v}" : "#{k}: #{v}"
+          end.join(', ')
         end
       end
     end

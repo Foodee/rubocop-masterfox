@@ -33,6 +33,21 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedAttribute, :config do
         end
       RUBY
     end
+
+    it 'keeps symbol from options' do
+      expect_offense(<<~RUBY)
+        class Foo
+          exposed_attribute :bar, readonly: true, format: :value_object
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedAttribute: This method is deprecated. Replace it with: `attribute :bar, public: true`
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Foo
+          attribute :bar, public: true, readonly: true, format: :value_object
+        end
+      RUBY
+    end
   end
 
   it 'does not register an offense when using `#attribute (public)`' do

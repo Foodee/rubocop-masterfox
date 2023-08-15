@@ -33,6 +33,21 @@ RSpec.describe RuboCop::Cop::MasterFox::ExposedHasOne, :config do
         end
       RUBY
     end
+
+    it 'keeps symbol from options' do
+      expect_offense(<<~RUBY)
+        class Foo
+          exposed_has_one :bar, foreign_key: :something
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ MasterFox/ExposedHasOne: This method is deprecated. Replace it with: `has_one :bar, public: true`
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Foo
+          has_one :bar, public: true, foreign_key: :something
+        end
+      RUBY
+    end
   end
 
   it 'does not register an offense when using `#has_one (public)`' do
